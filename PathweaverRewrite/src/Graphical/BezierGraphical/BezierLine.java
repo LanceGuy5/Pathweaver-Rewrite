@@ -28,13 +28,17 @@ public class BezierLine {
         m_bezierGraphManager.addMidpoint(midpoint);
         //DEAL WITH THIS IN ANOTHER CLASS? - CREATE PATH RENDERING CLASS, ADD PATHS FROM EVERY LINE, RENDER AS ONE PATH
         p2d = new Path2D.Double();
-        p2d.moveTo(p1.getScreenX(), p1.getPosY());
-        p2d.curveTo(p1.getScreenX(), 
-                    p1.getScreenY(), 
-                    p2.getScreenX(), 
-                    p2.getScreenY(), 
-                    midpoint.getScreenX(), 
-                    midpoint.getScreenY());
+        p2d.moveTo(p1.getScreenX(), p1.getScreenY());
+        // p2d.curveTo(p1.getScreenX(), 
+        //             p1.getScreenY(), 
+        //             midpoint.getScreenX(), 
+        //             midpoint.getScreenY(), 
+        //             p2.getScreenX(), 
+        //             p2.getScreenY());
+        p2d.quadTo(midpoint.getScreenX(),
+                   midpoint.getScreenY(), 
+                   p2.getScreenX(),
+                   p2.getScreenY());
     }
 
     public void render(Graphics g){
@@ -45,11 +49,12 @@ public class BezierLine {
         g2d.draw(p2d);
     }
 
+    public Path2D getPath() {
+        return (Path2D) p2d.clone();
+    }
+
     public void deconstruct(){
         m_bezierGraphManager.removePoint(midpoint);
     }
-
-    //B(t) = (1-t)[(1-t)P0+tP1]+t[(1-t)P1+tP2]
-    //B'(t) = 2(1-t)(P1-P0)+2t(P2-P1)
 
 }

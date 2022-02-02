@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
+import java.awt.geom.AffineTransform;
 
 public class BezierGraphManager {
 
@@ -17,6 +19,7 @@ public class BezierGraphManager {
     private boolean renderMidpoints = true;
 
     Path2D.Double m_totalPath;
+    PathIterator pi;
 
     //TODO ADD CODE THAT RETURNS THE STRUCTURE AS ONE LARGE SHAPE
 
@@ -25,6 +28,7 @@ public class BezierGraphManager {
         lines = new LinkedList<BezierLine>();
         midpoints = new LinkedList<BezierPoint>();
         prevSize = points.size();
+        m_totalPath = new Path2D.Double();
     }
 
     public void tick(){
