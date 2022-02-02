@@ -50,7 +50,7 @@ public class Pathweaver extends Canvas implements Runnable{
      * Images
      */
     private BufferedImage m_fieldImage;
-    Thread loadFlag = new Thread(() -> m_fieldImage = m_bufferedImageLoader.loadImage("/flag.png"));
+    Thread loadField = new Thread(() -> m_fieldImage = m_bufferedImageLoader.loadImage("/flag.png"));
     Dimension fieldMin = new Dimension(0, 0);
     Dimension fieldMax = new Dimension(1, 1);
 
@@ -104,6 +104,9 @@ public class Pathweaver extends Canvas implements Runnable{
 
         this.addKeyListener(m_keyInput);
         this.addMouseListener(m_mouseInput);
+
+        //Load Images
+        // loadField.start();
     }
 
     @Override

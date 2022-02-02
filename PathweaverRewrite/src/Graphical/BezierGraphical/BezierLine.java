@@ -25,8 +25,16 @@ public class BezierLine {
                                    (p1.getScreenX() + p2.getScreenX()) / 2, 
                                    (p1.getScreenY() + p2.getScreenY()) / 2, 
                                    BezierID.MIDPOINT);
-        m_bezierGraphManager.addPoint(midpoint);
+        m_bezierGraphManager.addMidpoint(midpoint);
+        //DEAL WITH THIS IN ANOTHER CLASS? - CREATE PATH RENDERING CLASS, ADD PATHS FROM EVERY LINE, RENDER AS ONE PATH
         p2d = new Path2D.Double();
+        p2d.moveTo(p1.getScreenX(), p1.getPosY());
+        p2d.curveTo(p1.getScreenX(), 
+                    p1.getScreenY(), 
+                    p2.getScreenX(), 
+                    p2.getScreenY(), 
+                    midpoint.getScreenX(), 
+                    midpoint.getScreenY());
     }
 
     public void render(Graphics g){
@@ -34,12 +42,7 @@ public class BezierLine {
         Graphics2D g2d = (Graphics2D)g;
         g2d.setStroke(new BasicStroke(10));
         //TODO CHECK TO MAKE SURE POINTS ARE ORGANIZED CORRECTLY
-        p2d.curveTo(p1.getScreenX(), 
-                    p1.getScreenY(), 
-                    p2.getScreenX(), 
-                    p2.getScreenY(), 
-                    midpoint.getScreenX(), 
-                    midpoint.getScreenY());
+        g2d.draw(p2d);
     }
 
     public void deconstruct(){
