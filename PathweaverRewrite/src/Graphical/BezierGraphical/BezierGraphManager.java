@@ -1,6 +1,7 @@
 package Graphical.BezierGraphical;
 
 import java.util.LinkedList;
+import java.lang.ClassCastException;
 
 import Graphical.*;
 
@@ -59,11 +60,18 @@ public class BezierGraphManager {
         }
     }
 
+    //TODO THROWS EXCEPTION
     public void redrawPath(){
+        // LinkedList<BezierPoint> tempMidpoints = new LinkedList<BezierPoint>();
+        for(int i = 0; i < lines.size(); i++){
+            // tempMidpoints.add(lines.get(i).getMidpoint());
+            lines.get(i).deconstruct();
+        }
+        lines.clear();
         if(points.size() > 1){
             for(int i = 0; i < points.size() - 1; i++){
                 // BezierLine temp = new BezierLine(points.get(i), points.get(i + 1), this);
-                lines.add(new BezierLine(points.get(i), points.get(i + 1), this));
+                lines.add(new BezierLine(points.get(i), points.get(i + 1),/* tempMidpoints.get(i),*/ this));
             }
         }
     }
@@ -100,6 +108,10 @@ public class BezierGraphManager {
 
     public LinkedList<BezierPoint> getMidpoints(){
         return midpoints;
+    }
+
+    public LinkedList<BezierLine> getLines(){
+        return lines;
     }
     
 }

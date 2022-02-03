@@ -9,7 +9,7 @@ import Graphical.BezierGraphical.*;
 
 public class MouseInput extends MouseAdapter{
     
-    private BezierGraphManager m_BezierGraphManager;
+    private BezierGraphManager m_bezierGraphManager;
     private KeyInput m_keyInput;
 
     private Dimension m_boundaryMin;
@@ -17,11 +17,11 @@ public class MouseInput extends MouseAdapter{
 
     private BezierPoint selected = null;
 
-    public MouseInput(BezierGraphManager m_BezierGraphManager, 
+    public MouseInput(BezierGraphManager m_bezierGraphManager, 
                       KeyInput m_keyInput,
                       Dimension m_boundaryMin,
                       Dimension m_boundaryMax){
-        this.m_BezierGraphManager = m_BezierGraphManager;
+        this.m_bezierGraphManager = m_bezierGraphManager;
         this.m_keyInput = m_keyInput;
         this.m_boundaryMin = m_boundaryMin;
         this.m_boundaryMax = m_boundaryMax;
@@ -39,19 +39,19 @@ public class MouseInput extends MouseAdapter{
                 if(m_keyInput.getKeysDown()[0]){
                     //This code will create a point - waypoint in between start and end
                     //TODO Calculate the posX and posY (1, 1) using the final coordinate grid
-                    m_BezierGraphManager.addPoint(new BezierPoint(1, 1, 
+                    m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
                                                                   x, y, 
                                                                   BezierID.WAYPOINT));
                 }else if(m_keyInput.getKeysDown()[1]){
                     //This code will create a point - start point of path
                     //TODO Calculate the posX and posY (1, 1) using the final coordinate grid
-                    m_BezierGraphManager.addPoint(new BezierPoint(1, 1, 
+                    m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
                                                                   x, y, 
                                                                   BezierID.START));
                 }else if(m_keyInput.getKeysDown()[2]){
                     //This code will create a point - end point of path
                     //TODO Calculate the posX and posY (1, 1) using the final coordinate grid
-                    m_BezierGraphManager.addPoint(new BezierPoint(1, 1, 
+                    m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
                                                                   x, y, 
                                                                   BezierID.END));
                 }else if(m_keyInput.getKeysDown()[3]){
@@ -81,7 +81,13 @@ public class MouseInput extends MouseAdapter{
                 selected.setPosY(selected.getPosY()); //TODO MODIFY CALCULATIONS
                 selected.setScreenX(x);
                 selected.setScreenY(y);
-                // m_BezierGraphManager.redrawPath();
+                for(int i = 0; i < m_bezierGraphManager.getLines().size(); i++){
+                    BezierLine temp = m_bezierGraphManager.getLines().get(i);
+                    if(temp.getMidpoint().equals(selected)){
+                        temp.redrawPath();
+                        break;
+                    }
+                }
                 selected.setColor(Color.MAGENTA);
                 selected = null;
             }
@@ -95,7 +101,7 @@ public class MouseInput extends MouseAdapter{
      * @return The midpoint it is selecting
      */
     public BezierPoint isOnMidpoint(int x, int y){
-        for(BezierPoint p : m_BezierGraphManager.getMidpoints()){
+        for(BezierPoint p : m_bezierGraphManager.getMidpoints()){
             if(x < p.getScreenX() + BezierPoint.RADIUS && x > p.getScreenX() - BezierPoint.RADIUS){
                 if(y < p.getScreenY() + BezierPoint.RADIUS && y > p.getScreenY() - BezierPoint.RADIUS){
                     assert p.getID().equals(BezierID.MIDPOINT);
