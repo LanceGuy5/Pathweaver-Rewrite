@@ -11,7 +11,7 @@ import java.awt.Color;
  */
 public class BezierPoint {
     
-    protected static final int RADIUS = 5; //5px radius
+    public static final int RADIUS = 5; //5px radius
 
     /**
      * Values for the x and y positions relative to the coordinate graph in meters
@@ -28,6 +28,8 @@ public class BezierPoint {
      * @see BezierID
      */
     BezierID id;
+
+    Color c = Color.MAGENTA;
 
     /**
      * @param posX X position (relative to coordinate grid) on field
@@ -56,7 +58,7 @@ public class BezierPoint {
         }else if(id.equals(BezierID.END)){
             g.setColor(Color.GREEN);
         }else{
-            g.setColor(Color.MAGENTA);
+            g.setColor(c);
         }
         // Graphics2D g2d = (Graphics2D)g;
         // g2d.setStroke(new BasicStroke(10));
@@ -67,20 +69,40 @@ public class BezierPoint {
         return posX;
     }
 
+    public void setPosX(int posX){
+        this.posX = posX;
+    }
+
     public int getPosY(){
         return posY;
+    }
+
+    public void setPosY(int posY){
+        this.posY = posY;
     }
 
     public int getScreenX(){
         return screenX;
     }
 
+    public void setScreenX(int screenX){
+        this.screenX = screenX;
+    }
+
     public int getScreenY(){
         return screenY;
     }
 
+    public void setScreenY(int screenY){
+        this.screenY = screenY;
+    }
+
     public BezierID getID(){
         return id;
+    }
+
+    public void setColor(Color c){
+        this.c = c;
     }
 
 }

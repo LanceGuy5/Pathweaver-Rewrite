@@ -94,10 +94,10 @@ public class Pathweaver extends Canvas implements Runnable{
     }
 
     public void init(){
-        m_bezierGraphManager = new BezierGraphManager();
         m_keyInput = new KeyInput();
 
          //TODO ESTABLISH X AND Y USING IMAGE.X, IMAGE.y
+        m_bezierGraphManager = new BezierGraphManager(m_keyInput);
         m_mouseInput = new MouseInput(m_bezierGraphManager, m_keyInput, 
         new Dimension(0, 0), new Dimension(m_graphicalInterface.getFrameWidth(), 
         m_graphicalInterface.getFrameHeight()));

@@ -2,6 +2,7 @@ package Graphical;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import Graphical.BezierGraphical.*;
@@ -14,6 +15,8 @@ public class MouseInput extends MouseAdapter{
     private Dimension m_boundaryMin;
     private Dimension m_boundaryMax;
 
+    private BezierPoint selected = null;
+
     public MouseInput(BezierGraphManager m_BezierGraphManager, 
                       KeyInput m_keyInput,
                       Dimension m_boundaryMin,
@@ -24,6 +27,7 @@ public class MouseInput extends MouseAdapter{
         this.m_boundaryMax = m_boundaryMax;
     }
 
+    @Override
     public void mouseReleased(MouseEvent e){
         int x = e.getX();
         int y = e.getY();
@@ -56,6 +60,54 @@ public class MouseInput extends MouseAdapter{
                 // m_BezierGraphManager.addPoint(new BezierPoint(1, 1, x, y, BezierID.MIDPOINT));
             }
         }
+    }
+
+    //BUGGY
+    @Override
+    public void mouseClicked(MouseEvent e){
+        int x = e.getX(), y = e.getY();
+        if(m_keyInput.getMidpointsToggled()){
+            if(selected == null){
+                BezierPoint currClicked = isOnMidpoint(x, y);
+                if(currClicked != null){
+                    System.out.println("Clicked");
+                    selected = currClicked;
+                    selected.setColor(Color.CYAN);
+                }else{
+                    System.out.println("Null clicked");
+                }
+            }else{
+                selected.setPosX(selected.getPosX()); //TODO MODIFY CALCULATIONS
+                selected.setPosY(selected.getPosY()); //TODO MODIFY CALCULATIONS
+                selected.setScreenX(x);
+                selected.setScreenY(y);
+                // m_BezierGraphManager.redrawPath();
+                selected.setColor(Color.MAGENTA);
+                selected = null;
+            }
+        }
+    }
+
+    /**
+     * Determines if the click is on any midpoint
+     * @param x X point of click
+     * @param y Y point of click
+     * @return The midpoint it is selecting
+     */
+    public BezierPoint isOnMidpoint(int x, int y){
+        for(BezierPoint p : m_BezierGraphManager.getMidpoints()){
+            if(x < p.getScreenX() + BezierPoint.RADIUS && x > p.getScreenX() - BezierPoint.RADIUS){
+                if(y < p.getScreenY() + BezierPoint.RADIUS && y > p.getScreenY() - BezierPoint.RADIUS){
+                    assert p.getID().equals(BezierID.MIDPOINT);
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void deselectMidpoint(){
+
     }
 
 }

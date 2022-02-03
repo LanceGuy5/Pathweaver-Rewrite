@@ -2,6 +2,8 @@ package Graphical.BezierGraphical;
 
 import java.util.LinkedList;
 
+import Graphical.*;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
@@ -16,14 +18,15 @@ public class BezierGraphManager {
 
     private int prevSize = 0;
 
-    private boolean renderMidpoints = true;
-
     Path2D.Double m_totalPath;
     PathIterator pi;
 
+    private KeyInput m_keyInput;
+
     //TODO ADD CODE THAT RETURNS THE STRUCTURE AS ONE LARGE SHAPE
 
-    public BezierGraphManager(){
+    public BezierGraphManager(KeyInput m_keyInput){
+        this.m_keyInput = m_keyInput;
         points = new LinkedList<BezierPoint>();
         lines = new LinkedList<BezierLine>();
         midpoints = new LinkedList<BezierPoint>();
@@ -37,6 +40,9 @@ public class BezierGraphManager {
             redrawPath();
         }
         prevSize = points.size();
+        if(midpoints.size() != lines.size()){
+            System.out.println("ERROR WITH COUNT");
+        }
     }
 
     public void render(Graphics g){
@@ -46,7 +52,7 @@ public class BezierGraphManager {
         for(BezierPoint temp : points){
             temp.render(g);
         }
-        if(renderMidpoints){
+        if(m_keyInput.getMidpointsToggled()){
             for(BezierPoint temp : midpoints){
                 temp.render(g);
             }
@@ -92,12 +98,8 @@ public class BezierGraphManager {
         midpoints.remove(p);
     }
 
-    public boolean getMidpointRender(){
-        return renderMidpoints;
-    }
-
-    public void setMidpointRender(boolean set){
-        renderMidpoints = set;
+    public LinkedList<BezierPoint> getMidpoints(){
+        return midpoints;
     }
     
 }

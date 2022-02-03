@@ -29,12 +29,6 @@ public class BezierLine {
         //DEAL WITH THIS IN ANOTHER CLASS? - CREATE PATH RENDERING CLASS, ADD PATHS FROM EVERY LINE, RENDER AS ONE PATH
         p2d = new Path2D.Double();
         p2d.moveTo(p1.getScreenX(), p1.getScreenY());
-        // p2d.curveTo(p1.getScreenX(), 
-        //             p1.getScreenY(), 
-        //             midpoint.getScreenX(), 
-        //             midpoint.getScreenY(), 
-        //             p2.getScreenX(), 
-        //             p2.getScreenY());
         p2d.quadTo(midpoint.getScreenX(),
                    midpoint.getScreenY(), 
                    p2.getScreenX(),
