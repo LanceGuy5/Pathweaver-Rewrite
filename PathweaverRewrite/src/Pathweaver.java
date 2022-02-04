@@ -77,12 +77,19 @@ public class Pathweaver extends Canvas implements Runnable{
         start();
     }
 
+    /**
+     * Method to start the Pathweaver thread - DO NOT MODIFY
+     */
     public synchronized void start(){
         if(isRunning) return;
         running.start();
         isRunning = true;
     }
 
+    /**
+     * Method to stop the Pathweaver thread - DO NOT MODIFY
+     * Shouldn't be called except in extreme situations
+     */
     public synchronized void stop(){
         if(!isRunning) return;
         try{
@@ -93,6 +100,11 @@ public class Pathweaver extends Canvas implements Runnable{
         isRunning = false;
     }
 
+    /**
+     * Method to initialize objects used in the program
+     * Would be done in constructor, but doing it in a method allows
+     * the user to call it as a new thread (if needed)
+     */
     public void init(){
         m_keyInput = new KeyInput();
 
@@ -104,13 +116,20 @@ public class Pathweaver extends Canvas implements Runnable{
 
         this.addKeyListener(m_keyInput);
         this.addMouseListener(m_mouseInput);
+        this.addMouseMotionListener(m_mouseInput);
 
         //Load Images
         // loadField.start();
     }
 
+    /**
+     * Run method - method representing Pathweaver as a thread
+     * Runs with a typical refresh loop
+     */
     @Override
     public void run() {
+        // Thread init = new Thread(this::init);
+        // init.start();
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
@@ -137,10 +156,17 @@ public class Pathweaver extends Canvas implements Runnable{
         }
     }
 
+    /**
+     * Method to tick every object
+     */
     public void tick(){
         m_bezierGraphManager.tick();
+        m_mouseInput.tick();
     }
 
+    /**
+     * Method to render every object
+     */
     public void render(){
         BufferStrategy bs = this.getBufferStrategy();
         if(bs == null){
@@ -174,6 +200,10 @@ public class Pathweaver extends Canvas implements Runnable{
         g.dispose();
     }
 
+    /**
+     * Method to get the current frames the program is running
+     * @return The number of frames (per second)
+     */
     public int getFrames(){
         return frames;
     }

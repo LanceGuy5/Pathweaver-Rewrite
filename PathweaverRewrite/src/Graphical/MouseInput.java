@@ -16,6 +16,8 @@ public class MouseInput extends MouseAdapter{
     private Dimension m_boundaryMax;
 
     private BezierPoint selected = null;
+    private int lockedX = 0;
+    private int lockedY = 0;
 
     public MouseInput(BezierGraphManager m_bezierGraphManager, 
                       KeyInput m_keyInput,
@@ -27,29 +29,41 @@ public class MouseInput extends MouseAdapter{
         this.m_boundaryMax = m_boundaryMax;
     }
 
+    public void tick(){
+        if(selected != null){
+            // temp.redrawPath();
+            selected.setPosX(selected.getPosX()); //TODO MODIFY CALCULATIONS
+            selected.setPosY(selected.getPosY()); //TODO MODIFY CALCULATIONS
+            selected.setScreenX(lockedX);
+            selected.setScreenY(lockedY);
+        }
+    }
+
     @Override
     public void mouseReleased(MouseEvent e){
         int x = e.getX();
         int y = e.getY();
-        //ESTABLISH MORE GUIDELINES IN FUTURE!!
 
+        try{
+            selected.setColor(Color.MAGENTA);
+            selected = null;
+        }catch(Exception ignored){}
+
+        //ESTABLISH MORE GUIDELINES IN FUTURE!
         //Determine x and y through MATH
         if(x > m_boundaryMin.getWidth() && x < m_boundaryMax.getWidth()){
             if(y > m_boundaryMin.getHeight() && y < m_boundaryMax.getHeight()){
                 if(m_keyInput.getKeysDown()[0]){
-                    //This code will create a point - waypoint in between start and end
                     //TODO Calculate the posX and posY (1, 1) using the final coordinate grid
                     m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
                                                                   x, y, 
                                                                   BezierID.WAYPOINT));
                 }else if(m_keyInput.getKeysDown()[1]){
-                    //This code will create a point - start point of path
                     //TODO Calculate the posX and posY (1, 1) using the final coordinate grid
                     m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
                                                                   x, y, 
                                                                   BezierID.START));
                 }else if(m_keyInput.getKeysDown()[2]){
-                    //This code will create a point - end point of path
                     //TODO Calculate the posX and posY (1, 1) using the final coordinate grid
                     m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
                                                                   x, y, 
@@ -57,30 +71,16 @@ public class MouseInput extends MouseAdapter{
                 }else if(m_keyInput.getKeysDown()[3]){
                     //This code will toggle on editing b-zeta point values
                 }
-                // m_BezierGraphManager.addPoint(new BezierPoint(1, 1, x, y, BezierID.MIDPOINT));
             }
         }
     }
 
-    //BUGGY
     @Override
-    public void mouseClicked(MouseEvent e){
-        int x = e.getX(), y = e.getY();
+    public void mouseDragged(MouseEvent e){
         if(m_keyInput.getMidpointsToggled()){
-            if(selected == null){
-                BezierPoint currClicked = isOnMidpoint(x, y);
-                if(currClicked != null){
-                    System.out.println("Clicked");
-                    selected = currClicked;
-                    selected.setColor(Color.CYAN);
-                }else{
-                    System.out.println("Null clicked");
-                }
-            }else{
-                selected.setPosX(selected.getPosX()); //TODO MODIFY CALCULATIONS
-                selected.setPosY(selected.getPosY()); //TODO MODIFY CALCULATIONS
-                selected.setScreenX(x);
-                selected.setScreenY(y);
+            if(selected != null){
+                lockedX = e.getX();
+                lockedY = e.getY();
                 for(int i = 0; i < m_bezierGraphManager.getLines().size(); i++){
                     BezierLine temp = m_bezierGraphManager.getLines().get(i);
                     if(temp.getMidpoint().equals(selected)){
@@ -88,8 +88,12 @@ public class MouseInput extends MouseAdapter{
                         break;
                     }
                 }
-                selected.setColor(Color.MAGENTA);
-                selected = null;
+            }else{
+                BezierPoint currClicked = isOnMidpoint(e.getX(), e.getY());
+                if(currClicked != null){
+                    selected = currClicked;
+                    selected.setColor(Color.CYAN);
+                }
             }
         }
     }

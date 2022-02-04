@@ -37,7 +37,6 @@ public class BezierGraphManager {
 
     public void tick(){
         if(prevSize != points.size()){
-            System.out.println("Invoked");
             redrawPath();
         }
         prevSize = points.size();
@@ -60,23 +59,29 @@ public class BezierGraphManager {
         }
     }
 
-    //TODO THROWS EXCEPTION
     public void redrawPath(){
-        // LinkedList<BezierPoint> tempMidpoints = new LinkedList<BezierPoint>();
+        LinkedList<BezierPoint> tempMidpoints = new LinkedList<BezierPoint>();
         for(int i = 0; i < lines.size(); i++){
-            // tempMidpoints.add(lines.get(i).getMidpoint());
+            tempMidpoints.add(lines.get(i).getMidpoint());
             lines.get(i).deconstruct();
         }
         lines.clear();
         if(points.size() > 1){
             for(int i = 0; i < points.size() - 1; i++){
-                // BezierLine temp = new BezierLine(points.get(i), points.get(i + 1), this);
-                lines.add(new BezierLine(points.get(i), points.get(i + 1),/* tempMidpoints.get(i),*/ this));
+                try{
+                    lines.add(new BezierLine(points.get(i), points.get(i + 1), tempMidpoints.get(i), this));
+                }catch(IndexOutOfBoundsException ignored){
+                    lines.add(new BezierLine(points.get(i), points.get(i + 1), this));
+                }
             }
         }
     }
 
-    //ADD MUCH MORE LOGIC
+    //TODO USED TO GENERATE FULL PATH
+    public Path2D.Double generateFullPath(){
+        return null;
+    }
+
     public void addPoint(BezierPoint p){
         assert !p.getID().equals(BezierID.MIDPOINT);
         points.add(p);
