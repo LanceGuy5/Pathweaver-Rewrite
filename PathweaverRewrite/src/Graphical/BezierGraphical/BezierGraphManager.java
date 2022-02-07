@@ -1,6 +1,7 @@
 package Graphical.BezierGraphical;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.lang.ClassCastException;
 
 import Graphical.*;
@@ -74,6 +75,26 @@ public class BezierGraphManager {
                     lines.add(new BezierLine(points.get(i), points.get(i + 1), this));
                 }
             }
+        }
+    }
+
+    public Path2D.Double generateTrajectoryPath(){
+        return null;
+    }
+
+    public boolean hasStart(){
+        try{
+            return points.getFirst().getID().equals(BezierID.START);
+        }catch(NoSuchElementException ignored){
+            return false;
+        }
+    }
+
+    public boolean hasEnd(){
+        try{
+            return points.getLast().getID().equals(BezierID.END);
+        }catch(NoSuchElementException ignored){
+            return false;
         }
     }
 

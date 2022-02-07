@@ -55,22 +55,29 @@ public class MouseInput extends MouseAdapter{
             if(y > m_boundaryMin.getHeight() && y < m_boundaryMax.getHeight()){
                 if(m_keyInput.getKeysDown()[0]){
                     //TODO Calculate the posX and posY (1, 1) using the final coordinate grid
-                    m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
-                                                                  x, y, 
-                                                                  BezierID.WAYPOINT));
+                    if(m_bezierGraphManager.hasStart() && !m_bezierGraphManager.hasEnd()){
+                        m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
+                                                                      x, y, 
+                                                                      BezierID.WAYPOINT));
+                    }
                 }else if(m_keyInput.getKeysDown()[1]){
                     //TODO Calculate the posX and posY (1, 1) using the final coordinate grid
-                    m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
-                                                                  x, y, 
-                                                                  BezierID.START));
+                    if(m_bezierGraphManager.getMidpoints().size() == 0 && !m_bezierGraphManager.hasStart()){
+                        m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
+                                                                      x, y, 
+                                                                      BezierID.START));
+                    }
                 }else if(m_keyInput.getKeysDown()[2]){
                     //TODO Calculate the posX and posY (1, 1) using the final coordinate grid
-                    m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
-                                                                  x, y, 
-                                                                  BezierID.END));
-                }else if(m_keyInput.getKeysDown()[3]){
-                    //This code will toggle on editing b-zeta point values
+                    if(m_bezierGraphManager.hasStart() && !m_bezierGraphManager.hasEnd()){
+                        m_bezierGraphManager.addPoint(new BezierPoint(1, 1, 
+                                                                      x, y, 
+                                                                      BezierID.END));
+                    }
                 }
+                // else if(m_keyInput.getKeysDown()[3]){
+                //     //This code will toggle on editing b-zeta point values
+                // }
             }
         }
     }
