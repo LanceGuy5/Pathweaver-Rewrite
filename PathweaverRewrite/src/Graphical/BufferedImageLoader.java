@@ -10,7 +10,9 @@ public class BufferedImageLoader {
 
     public BufferedImage loadImage(String path){
         try {
+            // System.out.println(Image);
             img = ImageIO.read(getClass().getResource(path));
+            // img = ImageIO.read(new URL(path));
         }catch(IOException e){
             return null;
         }

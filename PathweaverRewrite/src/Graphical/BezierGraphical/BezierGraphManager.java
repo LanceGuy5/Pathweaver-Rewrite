@@ -6,6 +6,7 @@ import java.lang.ClassCastException;
 
 import Graphical.*;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
@@ -17,6 +18,8 @@ public class BezierGraphManager {
     private LinkedList<BezierPoint> points;
     private LinkedList<BezierLine> lines;
     private LinkedList<BezierPoint> midpoints;
+
+    private boolean hasFinalPath = false;
 
     private int prevSize = 0;
 
@@ -78,10 +81,6 @@ public class BezierGraphManager {
         }
     }
 
-    public Path2D.Double generateTrajectoryPath(){
-        return null;
-    }
-
     public boolean hasStart(){
         try{
             return points.getFirst().getID().equals(BezierID.START);
@@ -98,8 +97,20 @@ public class BezierGraphManager {
         }
     }
 
-    //TODO USED TO GENERATE FULL PATH
-    public Path2D.Double generateFullPath(){
+    public Path2D.Double generateFullScreenPath(){
+        if(!(hasStart() && hasEnd())){
+            return null;
+        }else{
+            Path2D.Double ret = new Path2D.Double();
+            ret.moveTo(points.getFirst().getScreenX(), points.getFirst().getScreenY());
+            for(BezierLine line : lines){
+                ret.append(line.getPath(), true);
+            }
+            return ret;
+        }
+    }
+
+    public Path2D.Double generateFullMathematicalPath(){
         return null;
     }
 
@@ -138,6 +149,10 @@ public class BezierGraphManager {
 
     public LinkedList<BezierLine> getLines(){
         return lines;
+    }
+
+    public boolean hasFinalPath(){
+        return hasFinalPath;
     }
     
 }
